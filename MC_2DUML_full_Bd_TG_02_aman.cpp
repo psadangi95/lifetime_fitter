@@ -32,8 +32,6 @@ void MC_2DUML_full_Bd_TG_02_aman()
     TTree *tree = (TTree *)fin->Get("tree");
     TTree *tree1 = (TTree *)fin1->Get("tree");
     TTree *tree2 = (TTree *)fin2->Get("tree");
-    //TChain *tree = new TChain("tree");
-    //tree->Add("sel_18data_osc_data_cut_bdt_s0.root");
     int entries = tree->GetEntries();
     int entries1 = tree1->GetEntries();
     int entries2 = tree2->GetEntries();
@@ -85,7 +83,7 @@ void MC_2DUML_full_Bd_TG_02_aman()
     for (int j = 0; j < entries; j++)
     {
         tree->GetEntry(j);
-        if (bdt_t <= 0.61 )//&& Bprob_t <0.05)
+        if (bdt_t <= 0.61 )
             continue;
         if(treco_t*1e12<0.2 || treco_t*1e12>10 ) continue;
         if(truebs==0) continue;
@@ -98,7 +96,7 @@ void MC_2DUML_full_Bd_TG_02_aman()
     for (int j = 0; j < entries1; j++)
     {
         tree1->GetEntry(j);
-        if (bdt_t1 <= 0.64  )//&& Bprob_t1 <0.05)
+        if (bdt_t1 <= 0.64  )
             continue;
         if(truebs1==0) continue;
         if(treco_t1*1e12<0.2 || treco_t1*1e12>10) continue;
