@@ -50,7 +50,7 @@ void MC_2DUML_full_Bd_TG_02_aman()
     tree->SetBranchAddress("BProb", &Bprob_t);
     tree->SetBranchAddress("Btrecoxy_PDG", &treco_t);
     tree->SetBranchAddress("Btrecoxye_J", &trecoe_t);
-    tree->SetBranchAddress("Bdt", &bdt_t);
+    tree->SetBranchAddress("BDT_ksmassangle", &bdt_t);
     tree->SetBranchAddress("is_truebs", &truebs);
     tree->SetBranchAddress("fpu_w8", &fpuw8);
 
@@ -58,7 +58,7 @@ void MC_2DUML_full_Bd_TG_02_aman()
     tree1->SetBranchAddress("BProb", &Bprob_t1);
     tree1->SetBranchAddress("Btrecoxy_PDG", &treco_t1);
     tree1->SetBranchAddress("Btrecoxye_J", &trecoe_t1);
-    tree1->SetBranchAddress("Bdt", &bdt_t1);
+    tree1->SetBranchAddress("BDT_ksmassangle", &bdt_t1);
     tree1->SetBranchAddress("is_truebs", &truebs1);
     tree1->SetBranchAddress("fpu_w8", &fpuw81);
 
@@ -66,7 +66,7 @@ void MC_2DUML_full_Bd_TG_02_aman()
     tree2->SetBranchAddress("BProb", &Bprob_t2);
     tree2->SetBranchAddress("Btrecoxy_PDG", &treco_t2);
     tree2->SetBranchAddress("Btrecoxye_J", &trecoe_t2);
-    tree2->SetBranchAddress("Bdt", &bdt_t2);
+    tree2->SetBranchAddress("BDT_ksmassangle", &bdt_t2);
     tree2->SetBranchAddress("is_truebs", &truebs2);
     tree2->SetBranchAddress("fpu_w8", &fpuw82);
 
