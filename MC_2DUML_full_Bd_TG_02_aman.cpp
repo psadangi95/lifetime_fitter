@@ -32,6 +32,8 @@ void MC_2DUML_full_Bd_TG_02_aman()
     TTree *tree = (TTree *)fin->Get("tree");
     TTree *tree1 = (TTree *)fin1->Get("tree");
     TTree *tree2 = (TTree *)fin2->Get("tree");
+    //TChain *tree = new TChain("tree");
+    //tree->Add("sel_18data_osc_data_cut_bdt_s0.root");
     int entries = tree->GetEntries();
     int entries1 = tree1->GetEntries();
     int entries2 = tree2->GetEntries();
@@ -83,8 +85,8 @@ void MC_2DUML_full_Bd_TG_02_aman()
     for (int j = 0; j < entries; j++)
     {
         tree->GetEntry(j);
-        if (bdt_t <= 0.61 )
-            continue;
+        if (bdt_t <= 0.52 )//&& Bprob_t <0.05)
+        continue;
         if(treco_t*1e12<0.2 || treco_t*1e12>10 ) continue;
         if(truebs==0) continue;
             mass.setVal(m_t);
@@ -96,8 +98,8 @@ void MC_2DUML_full_Bd_TG_02_aman()
     for (int j = 0; j < entries1; j++)
     {
         tree1->GetEntry(j);
-        if (bdt_t1 <= 0.64  )
-            continue;
+        if (bdt_t1 <= 0.56  )//&& Bprob_t1 <0.05)
+        continue;
         if(truebs1==0) continue;
         if(treco_t1*1e12<0.2 || treco_t1*1e12>10) continue;
             mass.setVal(m_t1);
@@ -109,7 +111,7 @@ void MC_2DUML_full_Bd_TG_02_aman()
     for (int j = 0; j < entries2; j++)
     {
         tree2->GetEntry(j);
-        if (bdt_t2 <= 0.66)
+        if (bdt_t2 <= 0.56)
         continue;
         if(truebs2==0) continue;
         if(treco_t2*1e12<0.2 || treco_t2*1e12>10) continue;
@@ -120,30 +122,34 @@ void MC_2DUML_full_Bd_TG_02_aman()
     }
 
     reduc_tree->Print();
+    reduc_tree1->Print();
+    reduc_tree2->Print();
 
     TCut c1 = "mass>5.0 && mass<5.6";
     RooDataSet *reduce_tree = (RooDataSet*)reduc_tree->reduce(c1);
     RooDataSet *reduce_tree1 =(RooDataSet*)reduc_tree1->reduce(c1);
     RooDataSet *reduce_tree2 =(RooDataSet*)reduc_tree2->reduce(c1);
     reduce_tree->Print();
+    reduce_tree1->Print();
+    reduce_tree2->Print();
     
     // using triple gaussians
-    RooRealVar fg3_16("fg1","",7.31341e-01,0.1,0.99);
-    RooRealVar fg4_16("fg2","",9.91368e-01,0.1,0.99);
+    RooRealVar fg3_16("fg3_16","",7.31341e-01,0.01,0.99);
+    RooRealVar fg4_16("fg4_16","",9.91368e-01,0.01,0.99);
     RooRealVar mean2_16("mean2_16", "mean",5.27973e+00,5.27,5.29);
     RooRealVar sigma4_16("sigma4_16", "sigma1 of Gaussian",1.13345e-02,0.0001,0.2);//
     RooRealVar sigma5_16("sigma5_16", "sigma2 of Gaussian",2.61697e-02,0.0001,0.2);//
     RooRealVar sigma6_16("sigma6_16", "sigma3 of Gaussian",1.26803e-01,0.0001,0.2);//
 
-    RooRealVar fg3_17("fg1","",2.38446e-01,0.1,0.99);
-    RooRealVar fg4_17("fg2","",9.93663e-01,0.1,0.99);
+    RooRealVar fg3_17("fg3_17","",2.38446e-01,0.01,0.99);
+    RooRealVar fg4_17("fg4_17","",9.93663e-01,0.01,0.99);
     RooRealVar mean2_17("mean2_17", "mean",5.28001e+00,5.27,5.29);
     RooRealVar sigma4_17("sigma4_17", "sigma1 of Gaussian",2.56142e-02,0.0001,0.2);
     RooRealVar sigma5_17("sigma5_17", "sigma2 of Gaussian",1.05222e-02,0.0001,0.2);
     RooRealVar sigma6_17("sigma6_17", "sigma3 of Gaussian",2.10193e-01,0.0001,0.2);
 
-    RooRealVar fg3_18 ("fg3_18","",2.44072e-01,0.1,0.99);
-    RooRealVar fg4_18 ("fg4_18","",9.88339e-01,0.1,0.99);
+    RooRealVar fg3_18 ("fg3_18","",2.44072e-01,0.01,0.99);
+    RooRealVar fg4_18 ("fg4_18","",9.88339e-01,0.01,0.99);
     RooRealVar mean2_18 ("mean2_18","",5.27978e+00,5.27,5.29);
     RooRealVar sigma4_18 ("sigma4_18","",2.49649e-02,0.0001,0.2);
     RooRealVar sigma5_18 ("sigma5_18","",1.06898e-02,0.0001,0.2);
@@ -163,13 +169,13 @@ void MC_2DUML_full_Bd_TG_02_aman()
     RooGaussian gausian5_18("gausian5_18", "gaus5", mass, mean2_18, sigma5_18);
     RooGaussian gausian6_18("gausian6_18", "gaus6", mass, mean2_18, sigma6_18);
     
-    RooAddPdf mass216("mass216", "mass2", RooArgList(gausian4_16, gausian5_16), fg3_16);
-    RooAddPdf mass217("mass217", "mass2", RooArgList(gausian4_17, gausian5_17), fg3_17);
-    RooAddPdf mass218("mass218", "mass2", RooArgList(gausian4_18, gausian5_18), fg3_18);
+    RooAddPdf massBd16("massBd16", "mass2", RooArgList(gausian4_16, gausian5_16), fg3_16);
+    RooAddPdf massBd17("massBd17", "mass2", RooArgList(gausian4_17, gausian5_17), fg3_17);
+    RooAddPdf massBd18("massBd18", "mass2", RooArgList(gausian4_18, gausian5_18), fg3_18);
 
-    RooAddPdf massBd16("massBd16", "mass5", RooArgList(mass216, gausian6_16), fg4_16);
-    RooAddPdf massBd17("massBd17", "mass5", RooArgList(mass217, gausian6_17), fg4_17);
-    RooAddPdf massBd18("massBd18", "mass5", RooArgList(mass218, gausian6_18), fg4_18);
+    //RooAddPdf massBd16("massBd16", "mass5", RooArgList(mass216, gausian6_16), fg4_16);
+    //RooAddPdf massBd17("massBd17", "mass5", RooArgList(mass217, gausian6_17), fg4_17);
+    //RooAddPdf massBd18("massBd18", "mass5", RooArgList(mass218, gausian6_18), fg4_18);
 
     
     RooTruthModel gm("gm", "truth model", treco);
@@ -184,29 +190,45 @@ void MC_2DUML_full_Bd_TG_02_aman()
     RooDecay *decay_Bd17 = new RooDecay("decay_Bd17", "decay", treco, ltBd, gm, RooDecay::SingleSided);
     RooDecay *decay_Bd18 = new RooDecay("decay_Bd18", "decay", treco, ltBd, gm, RooDecay::SingleSided);
 
-    RooRealVar dl1bd66("dl1bd66", "effpdf meanbd", -0.01021); // define variables for the fit
-    RooRealVar dl2bd66("dl2bd66", "effpdf sigbd", -4.022e-11);
-    RooRealVar powlbd66("powlbd66", "powlbd", 0.03343);
-    RooRealVar powl2bd66("powl2bd66", "powl2bd", 3.443);
-    RooRealVar powl3bd66("powl3bd66", "powl3bd", -0.0001924);
+    RooRealVar dl1bd66("dl1bd66", "effpdf meanbd", -0.001911);//-0.01021); // define variables for the fit
+    RooRealVar dl2bd66("dl2bd66", "effpdf sigbd", -2.782e-05);//-4.022e-11);
+    RooRealVar powlbd66("powlbd66", "powlbd", 0.03276);//0.03343);
+    RooRealVar powl2bd66("powl2bd66", "powl2bd", 2.847);//3.443);
+    RooRealVar powl3bd66("powl3bd66", "powl3bd", -0.0002746);//-0.0001924);
     RooFormulaVar effbd16("effbd16", "(dl1bd66+dl2bd66*treco  + powlbd66 /(1+exp( -treco*powl2bd66)) +powl3bd66*treco*treco)", RooArgSet(treco, dl1bd66, dl2bd66, powlbd66, powl2bd66, powl3bd66));
     RooEffProd decaytime_bd16 ("decaytime_bd16", "", *decay_Bd16, effbd16);
+    dl1bd66.setConstant(kTRUE);
+    dl2bd66.setConstant(kTRUE);
+    powlbd66.setConstant(kTRUE);
+    powl2bd66.setConstant(kTRUE);
+    powl3bd66.setConstant(kTRUE);
 
-    RooRealVar dl1bd77("dl1bd77","effpdf meanbd77",-0.01034); //define variables for the fit
-    RooRealVar dl2bd77("dl2bd77","effpdf sigbd",-0.0002096);
-    RooRealVar powlbd77("powlbd77","powlbd",0.02853);
-    RooRealVar powl2bd77("powl2bd77","powl2bd",4.228);
-    RooRealVar powl3bd77("powl3bd77","powl3bd",-0.00007697);
+    RooRealVar dl1bd77("dl1bd77","effpdf meanbd77",-0.005701); //define variables for the fit
+    RooRealVar dl2bd77("dl2bd77","effpdf sigbd",-0.0006644);
+    RooRealVar powlbd77("powlbd77","powlbd",0.02466);
+    RooRealVar powl2bd77("powl2bd77","powl2bd",2.903);
+    RooRealVar powl3bd77("powl3bd77","powl3bd",-5.195e-05);
     RooFormulaVar effbd77("effbd77", "(dl1bd77+dl2bd77*treco  + powlbd77 /(1+exp( -treco*powl2bd77)) +powl3bd77*treco*treco)", RooArgSet(treco, dl1bd77,dl2bd77, powlbd77, powl2bd77, powl3bd77));
     RooEffProd decaytime_bd17("decaytime_bd17", "model with efficiencybd77", *decay_Bd17, effbd77);
     
-    RooRealVar dl1bd88("dl1bd88","effpdf meanbd",-0.01221); //define variables for the fit
-    RooRealVar dl2bd88("dl2bd88","effpdf sigbd",-4.263e-13);
-    RooRealVar powlbd88("powlbd88","powlbd",0.03354);
-    RooRealVar powl2bd88("powl2bd88","powl2bd",4.508);
-    RooRealVar powl3bd88("powl3bd88","powl3bd",-0.000144);
+    dl2bd77.setConstant(kTRUE);
+    dl1bd77.setConstant(kTRUE);
+    powlbd77.setConstant(kTRUE);
+    powl2bd77.setConstant(kTRUE);
+    powl3bd77.setConstant(kTRUE);
+
+    RooRealVar dl1bd88("dl1bd88","effpdf meanbd",-0.01031); //define variables for the fit
+    RooRealVar dl2bd88("dl2bd88","effpdf sigbd",-1.975e-12);
+    RooRealVar powlbd88("powlbd88","powlbd",0.03442);//0.03354);
+    RooRealVar powl2bd88("powl2bd88","powl2bd",4.387);//4.508);
+    RooRealVar powl3bd88("powl3bd88","powl3bd",-0.0001327);//-0.000144);
     RooFormulaVar effbd88("effbd88", "(dl1bd88+dl2bd88*treco  + powlbd88 /(1+exp( -treco*powl2bd88)) +powl3bd88*treco*treco)", RooArgSet(treco, dl1bd88,dl2bd88, powlbd88, powl2bd88, powl3bd88));
     RooEffProd decaytime_bd18("decaytime_bd18", "model with efficiency", *decay_Bd18, effbd88);
+    dl1bd88.setConstant(kTRUE);
+    dl2bd88.setConstant(kTRUE);
+    powlbd88.setConstant(kTRUE);
+    powl2bd88.setConstant(kTRUE);
+    powl3bd88.setConstant(kTRUE);
 
     RooProdPdf *Bd16 = new RooProdPdf("Bd16", "", RooArgSet(massBd16, decaytime_bd16));
     RooProdPdf *Bd17 = new RooProdPdf("Bd17", "", RooArgSet(massBd17, decaytime_bd17));
@@ -216,7 +238,10 @@ void MC_2DUML_full_Bd_TG_02_aman()
     era.defineType("2018") ;
     era.defineType("2017") ;
     era.defineType("2016") ;
-    RooDataSet combData("combData","combined data",RooArgSet(treco,trecoe, mass),Index(era),Import("2018",*reduce_tree),Import("2017",*reduce_tree1),Import("2016",*reduce_tree2)) ;
+    RooDataSet combData("combData","combined data",RooArgSet(treco,trecoe, mass, fpu_w8),Index(era),Import("2018",*reduce_tree),Import("2017",*reduce_tree1),Import("2016",*reduce_tree2),WeightVar("fpu_w8")) ;
+    //RooDataSet combData1("combData1","combined data",RooArgSet(treco,trecoe, mass),Index(era),Import("2018",*reduc_tree),Import("2017",*reduc_tree1),Import("2016",*reduc_tree2)) ;
+    //combData1.Print();
+    combData.Print();
     RooSimultaneous simPdf("simPdf","simultaneous pdf",era) ;
 
     simPdf.addPdf(*Bd18,"2018") ;
