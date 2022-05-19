@@ -121,17 +121,10 @@ void MC_2DUML_full_Bd_TG_02_aman()
             reduc_tree2->add(arglist,fpuw82);
     }
 
-    reduc_tree->Print();
-    reduc_tree1->Print();
-    reduc_tree2->Print();
-
     TCut c1 = "mass>5.0 && mass<5.6";
     RooDataSet *reduce_tree = (RooDataSet*)reduc_tree->reduce(c1);
     RooDataSet *reduce_tree1 =(RooDataSet*)reduc_tree1->reduce(c1);
     RooDataSet *reduce_tree2 =(RooDataSet*)reduc_tree2->reduce(c1);
-    reduce_tree->Print();
-    reduce_tree1->Print();
-    reduce_tree2->Print();
     
     // using triple gaussians
     RooRealVar fg3_16("fg3_16","",7.31341e-01,0.01,0.99);
